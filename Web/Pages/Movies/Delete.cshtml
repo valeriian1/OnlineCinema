@@ -1,0 +1,18 @@
+﻿@page
+@model DeleteModel
+@{
+	ViewData["Title"] = "Delete Movie";
+}
+
+<h2>Delete Movie</h2>
+<form method ="post">
+<div class="alert alert-warning">
+	Are you sure you want to delete the movie <strong>@Model.movie.Title</strong>?
+</div>
+<button type="submit" class="btn btn-danger">Delete</button>
+<a asp-page="/Schedule" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

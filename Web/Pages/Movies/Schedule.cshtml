@@ -1,0 +1,44 @@
+﻿@page
+@model ScheduleModel
+@{
+    ViewData["Title"] = "Schedule";
+}
+
+<a href="/Movies/Create" class="btn btn-success btn-sm">Add movie</a>
+
+@foreach (var movie in Model.Movies)
+{
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+        <h2>@movie.Title</h2>
+        <p><strong>Director:</strong> @movie.Director</p>
+        <p><strong>Genre:</strong> @movie.Genre</p>
+        <p><strong>Release Date:</strong> @movie.ReleaseDate.ToShortDateString()</p>
+        <p><strong>Description:</strong> @movie.Description</p>
+
+        <img src="@movie.PosterUrl" alt="Poster" style="max-height: 200px;" />
+
+        <h4>Sessions:</h4>
+
+        @if (movie.Sessions != null && movie.Sessions.Any())
+        {
+            <ul>
+                @foreach (var session in movie.Sessions)
+                {
+                    <li>
+                        <strong>Start:</strong> @session.StartTime.ToString("g"),
+                        <strong>End:</strong> @session.EndTime.ToString("g")
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No sessions available.</p>
+        }
+
+        <a asp-page="/Sessions/Create" asp-route-movieId="@movie.Id">Add Session</a>
+    </div>
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

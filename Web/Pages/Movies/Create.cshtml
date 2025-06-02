@@ -1,0 +1,58 @@
+﻿@page
+@model CreateModel
+@{
+	ViewData["Title"] = "Create Movie";
+}
+
+<div class="container shadow p-5">
+    <div class="row pb-2">
+		<h2 class="text-center">Add New Movie</h2>
+    </div>
+
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+		<div class="form-group">
+			<label asp-for="movie.Title"></label>
+			<input asp-for="movie.Title" class="form-control" />
+			<span asp-validation-for="movie.Title" class="text-danger"></span>
+		</div>
+
+        <div class="form-group">
+            <label asp-for="movie.Director"></label>
+            <input asp-for="movie.Director" class="form-control" />
+            <span asp-validation-for="movie.Director" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="movie.Genre"></label>
+            <input asp-for="movie.Genre" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="movie.Description"></label>
+            <textarea asp-for="movie.Description" class="form-control"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="movie.MovieCast"></label>
+            <input asp-for="movie.MovieCast" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="movie.PosterUrl"></label>
+            <input asp-for="movie.PosterUrl" class="form-control" />
+        </div>
+       
+        <a asp-page="/Sessions/Create" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-circle-fill"></i> Sessions
+        </a>
+        <a asp-page="/Schedule" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-circle-fill"></i> Back to schedule
+        </a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
