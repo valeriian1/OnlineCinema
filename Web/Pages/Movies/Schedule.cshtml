@@ -5,6 +5,14 @@
     ViewData["Title"] = "Movies";
 }
 
+<script .movies-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px; 
+        justify-content: flex-start;
+        }
+></script>
+
 <link rel="stylesheet" href="~/Style/StyleSheet.css" />
 
 <h1>@ViewData["Title"]</h1>
@@ -19,9 +27,13 @@
 <div class="movies-grid">
     @foreach (var movie in Model.Movies)
     {
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 20rem;">
             <img class="card-img-top" src="@movie.PosterUrl" alt="@movie.Title">
             <div class="card-body">
+                <div class="movie-actions mt-2">
+                    <a asp-page="/Movies/Edit" asp-route-id="@movie.Id" class="btn btn-warning btn-sm">Edit movie</a>
+                    <a asp-page="/Movies/Delete" asp-route-id="@movie.Id" class="btn btn-warning btn-sm">Delete movie</a>
+                </div>
                 <h5 class="card-title">@movie.Title</h5>
                 <a asp-page="/Sessions/Create" asp-route-movieId="@movie.Id" class="btn btn-primary btn-sm">Add session</a>
                 @if (movie.Sessions != null && movie.Sessions.Any())

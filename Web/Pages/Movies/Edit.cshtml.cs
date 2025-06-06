@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-
-namespace Web.Pages
+namespace Web.Pages.Movies
 {
     public class EditModel : PageModel
     {
@@ -14,14 +13,23 @@ namespace Web.Pages
 
         [BindProperty(SupportsGet = true)]
         public Movie movie { get; set; }
+
         public EditModel(ILogger<EditModel> logger, AppDbContext context)
         {
             _context = context;
             _logger = logger;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync(int id)
         {
+            movie = await _context.Movies.FindAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -32,12 +40,12 @@ namespace Web.Pages
             }
 
             var existingMovie = await _context.Movies
-                          .Include(m => m.Sessions) 
-                          .FirstOrDefaultAsync(m => m.Id == movie.Id);
+                .Include(m => m.Sessions)
+                .FirstOrDefaultAsync(m => m.Id == movie.Id);
 
             if (existingMovie == null)
             {
-                _logger.LogWarning("Movie with ID {Id} not found.", movie.Id);
+                _logger.LogWarning("movie with ID {Id} not found.", movie.Id);
                 return NotFound();
             }
 
@@ -49,19 +57,10 @@ namespace Web.Pages
             existingMovie.Genre = movie.Genre;
             existingMovie.PosterUrl = movie.PosterUrl;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-                _logger.LogInformation("Movie with ID {Id} and its sessions updated successfully.", movie.Id);
-                TempData["SuccessMessage"] = "Edited succesfully!";
-                return RedirectToPage("/Movies/Schedule"); 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating Movie with ID {Id}.", movie.Id);
-                ModelState.AddModelError("", "Something went wrong. Try again.");
-                return Page(); 
-            }
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("movie with ID {Id} updated successfully.", movie.Id);
+            TempData["SuccessMessage"] = "Edited successfully!";
+            return RedirectToPage("/Movies/Schedule");
         }
     }
 }

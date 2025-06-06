@@ -34,7 +34,7 @@ namespace Web.Pages.Movies
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("Movie created successfully.");
+            _logger.LogInformation("movie created successfully.");
             return RedirectToPage("/Movies/Schedule");
         }
     }

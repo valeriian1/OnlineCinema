@@ -7,37 +7,49 @@ namespace Web.Pages.Movies
 {
     public class DeleteModel : PageModel
     {
-        private readonly ILogger<CreateModel> _logger;
+        private readonly ILogger<DeleteModel> _logger;
         private readonly AppDbContext _context;
 
-        [BindProperty(SupportsGet = true)]
-        public Movie movie { get; set; }
-        public DeleteModel(ILogger<CreateModel> logger, AppDbContext context)
+        public DeleteModel(ILogger<DeleteModel> logger, AppDbContext context)
         {
             _context = context;
             _logger = logger;
         }
 
-        public void OnGet()
+        [BindProperty(SupportsGet = true)]
+        public Movie movie { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(int id)
         {
+            movie = await _context.Movies.FindAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (movie == null || movie.Id == 0)
             {
-                return Page();
+                return BadRequest();
             }
-            var movieToDelete = _context.Movies.Find(movie.Id);
+
+            var movieToDelete = await _context.Movies.FindAsync(movie.Id);
 
             if (movieToDelete == null)
             {
-                _logger.LogWarning("Movie with ID {Id} not found.", movie.Id);
+                _logger.LogWarning("movie with ID {Id} not found.", movie.Id);
                 return NotFound();
             }
+
             _context.Movies.Remove(movieToDelete);
             await _context.SaveChangesAsync();
-            _logger.LogInformation("Movie with ID {Id} deleted successfully.", movie.Id);
+
+            _logger.LogInformation("movie with ID {Id} deleted successfully.", movie.Id);
             return RedirectToPage("/Movies/Schedule");
         }
     }

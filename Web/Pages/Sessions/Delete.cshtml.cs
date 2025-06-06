@@ -17,8 +17,16 @@ namespace Web.Pages.Sessions
             _context = context;
             _logger = logger;
         }
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync(int id)
         {
+            session = await _context.Sessions.FindAsync(id);
+
+            if (session == null)
+            {
+                return NotFound();
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
