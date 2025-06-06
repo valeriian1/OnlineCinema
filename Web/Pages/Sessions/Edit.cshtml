@@ -2,3 +2,31 @@
 @model EditModel
 @{
 }
+
+<div class="container shadow p-5">
+    <div class="row pb-2">
+        <h2 class="text-center">Edit Session</h2>
+    </div>
+    <form method="post">
+        <input type="hidden" asp-for="session.MovieId" />
+
+        <div>
+            <label asp-for="session.StartTime"></label>
+            <input asp-for="session.StartTime" type="datetime-local" />
+        </div>
+		<div>
+			<label asp-for="session.EndTime"></label>
+			<input asp-for="session.EndTime" type="datetime-local" />
+
+        <button type="submit" class="btn btn-secondary">
+            <i class="bi bi-person-plus-fill"></i> Save Changes
+        </button>
+        <a asp-page="/Movies/Schedule" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-circle-fill"></i> Back to List
+        </a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

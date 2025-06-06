@@ -1,4 +1,21 @@
 ﻿@page
 @model DeleteModel
 @{
+	ViewData["Title"] = "Delete Session";
 }
+
+<div class="container shadow p-5">
+	<div class="row pb-2">
+		<h2 class="text-center">Delete Session</h2>
+	</div>
+	<form method="post">
+		<div class="alert alert-warning">
+			Are you sure you want to delete the session for movie <strong>@Model.session.Movie.Title</strong> scheduled at <strong>@Model.session.StartTime.ToString("g")</strong>?
+		</div>
+		<button type="submit" class="btn btn-danger">
+			<i class="bi bi-trash-fill"></i> Delete
+		</button>
+		<a asp-page="/Movies/Schedule" class="btn btn-secondary">
+			<i class="bi bi-arrow-left-circle-fill"></i> Cancel
+		</a>
+	</form>

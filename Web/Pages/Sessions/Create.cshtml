@@ -1,7 +1,7 @@
 ﻿@page
 @model CreateModel
 @{
-	ViewData["Title"] = "Add Sessions";
+	ViewData["Title"] = "Add Session";
 }
 
 <div class="container shadow p-5">
@@ -9,15 +9,15 @@
         <h2 class="text-center">Add Sessions</h2>
     </div>
     <form method="post">
-        <input type="hidden" asp-for="Session.MovieId" />
+        <input type="hidden" asp-for="session.MovieId" />
 
         <div>
-            <label asp-for="Session.StartTime"></label>
-            <input asp-for="Session.StartTime" type="datetime-local" />
+            <label asp-for="session.StartTime"></label>
+            <input asp-for="session.StartTime" type="datetime-local" />
         </div>
         <div>
-            <label asp-for="Session.EndTime"></label>
-            <input asp-for="Session.EndTime" type="datetime-local" />
+            <label asp-for="session.EndTime"></label>
+            <input asp-for="session.EndTime" type="datetime-local" />
         </div>
 
         <button type="submit" class="btn btn-secondary">

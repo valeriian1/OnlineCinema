@@ -22,23 +22,23 @@ namespace Web.Pages.Movies
         {
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            var existingMovie = _context.Movies.Find(movie.Id);
-            if (existingMovie == null)
+            var movieToDelete = _context.Movies.Find(movie.Id);
+
+            if (movieToDelete == null)
             {
                 _logger.LogWarning("Movie with ID {Id} not found.", movie.Id);
                 return NotFound();
             }
-            _context.Movies.Remove(existingMovie);
+            _context.Movies.Remove(movieToDelete);
             await _context.SaveChangesAsync();
             _logger.LogInformation("Movie with ID {Id} deleted successfully.", movie.Id);
-            return RedirectToPage("Schedule");
+            return RedirectToPage("/Movies/Schedule");
         }
-
     }
 }

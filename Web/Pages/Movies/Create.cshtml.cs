@@ -10,13 +10,15 @@ namespace Web.Pages.Movies
         private readonly ILogger<CreateModel> _logger;
         private readonly AppDbContext _context;
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
         public Movie movie { get; set; }
+
         public CreateModel(ILogger<CreateModel> logger, AppDbContext context)
         {
             _context = context;
             _logger = logger;
         }
+
         public void OnGet()
         {
         }
@@ -27,12 +29,13 @@ namespace Web.Pages.Movies
             {
                 return Page();
             }
-
+          
+            movie.Sessions = new List<Session>(); 
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
             _logger.LogInformation("Movie created successfully.");
-            return RedirectToPage("/Sessions/Create");
+            return RedirectToPage("/Movies/Schedule");
         }
     }
 }

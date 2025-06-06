@@ -1,44 +1,81 @@
-﻿@page
+﻿
+@page
 @model ScheduleModel
 @{
-    ViewData["Title"] = "Schedule";
+    ViewData["Title"] = "Movies";
 }
+
+<link rel="stylesheet" href="~/Style/StyleSheet.css" />
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="get" class="search-form">
+    <input type="text" name="SearchString" value="@Model.SearchString" placeholder="Search..." class="search-input" />
+    <button type="submit" class="search-button">🔍</button>
+</form>
 
 <a href="/Movies/Create" class="btn btn-success btn-sm">Add movie</a>
 
-@foreach (var movie in Model.Movies)
-{
-    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
-        <h2>@movie.Title</h2>
-        <p><strong>Director:</strong> @movie.Director</p>
-        <p><strong>Genre:</strong> @movie.Genre</p>
-        <p><strong>Release Date:</strong> @movie.ReleaseDate.ToShortDateString()</p>
-        <p><strong>Description:</strong> @movie.Description</p>
-
-        <img src="@movie.PosterUrl" alt="Poster" style="max-height: 200px;" />
-
-        <h4>Sessions:</h4>
-
-        @if (movie.Sessions != null && movie.Sessions.Any())
-        {
-            <ul>
-                @foreach (var session in movie.Sessions)
+<div class="movies-grid">
+    @foreach (var movie in Model.Movies)
+    {
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="@movie.PosterUrl" alt="@movie.Title">
+            <div class="card-body">
+                <h5 class="card-title">@movie.Title</h5>
+                <a asp-page="/Sessions/Create" asp-route-movieId="@movie.Id" class="btn btn-primary btn-sm">Add session</a>
+                @if (movie.Sessions != null && movie.Sessions.Any())
                 {
-                    <li>
-                        <strong>Start:</strong> @session.StartTime.ToString("g"),
-                        <strong>End:</strong> @session.EndTime.ToString("g")
-                    </li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p>No sessions available.</p>
-        }
+                    <div class="start-times">
+                        @foreach (var session in movie.Sessions)
+                        {
+                            <span class="start-time">
+                                @session.StartTime.ToString("HH:mm")
+                            </span>
 
-        <a asp-page="/Sessions/Create" asp-route-movieId="@movie.Id">Add Session</a>
-    </div>
-}
+                            <div class="session-actions">
+                                <a asp-page="/Sessions/Edit" asp-route-movieId="@movie.Id" class="btn btn-secondary">Edit</a>
+                                <a asp-page="/Sessions/Delete" asp-route-movieId="@movie.Id" class="btn btn-secondary">Delete</a>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p><small>No sessions.</small></p>
+                }
+
+                <div class="details-container">
+                    <span class="details-trigger" data-target-details="details-content-@movie.Id">Details</span>
+                    <div class="details-content" id="details-content-@movie.Id" style="display: none;">
+                        <p><strong>Режисер:</strong> @movie.Director</p>
+                        <p><strong>У ролях:</strong> @movie.MovieCast</p>
+                        <p><strong>Дата виходу:</strong> @movie.ReleaseDate.ToString("dd.MM.yyyy")</p>
+                        <p><strong>Жанр:</strong> @movie.Genre</p>
+                        <p><strong>Опис:</strong> @movie.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const detailTriggers = document.querySelectorAll('.details-trigger');
+
+            detailTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-target-details');
+                    const detailsContent = document.getElementById(targetId);
+
+                    if (detailsContent) {
+                        const isHidden = detailsContent.style.display === 'none' || detailsContent.style.display === '';
+                        detailsContent.style.display = isHidden ? 'block' : 'none';
+                    }
+                });
+            });
+        });
+    </script>
 }

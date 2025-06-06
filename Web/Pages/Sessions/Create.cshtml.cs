@@ -16,24 +16,21 @@ namespace Web.Pages.Sessions
             _logger = logger;
         }
 
-        [BindProperty(SupportsGet = true)]
-        public Session Session { get; set; }
+        [BindProperty]
+        public Session session { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int movieId)
+        public void OnGet()
         {
-            Session = new Session { MovieId = movieId };
-            return Page();
         }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
                 return Page();
 
-            _context.Sessions.Add(Session);
+            _context.Sessions.Add(session);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Movies/Schedule", new { id = Session.MovieId });
+            return RedirectToPage("/Movies/Schedule");
         }
     }
 }

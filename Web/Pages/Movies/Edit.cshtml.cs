@@ -54,7 +54,7 @@ namespace Web.Pages
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Movie with ID {Id} and its sessions updated successfully.", movie.Id);
                 TempData["SuccessMessage"] = "Edited succesfully!";
-                return RedirectToPage("Schedule"); 
+                return RedirectToPage("/Movies/Schedule"); 
             }
             catch (Exception ex)
             {

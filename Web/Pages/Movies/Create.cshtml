@@ -1,22 +1,22 @@
 ﻿@page
 @model CreateModel
 @{
-	ViewData["Title"] = "Create Movie";
+    ViewData["Title"] = "Create Movie";
 }
 
 <div class="container shadow p-5">
     <div class="row pb-2">
-		<h2 class="text-center">Add New Movie</h2>
+        <h2 class="text-center">Add New Movie</h2>
     </div>
 
     <form method="post">
         <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-		<div class="form-group">
-			<label asp-for="movie.Title"></label>
-			<input asp-for="movie.Title" class="form-control" />
-			<span asp-validation-for="movie.Title" class="text-danger"></span>
-		</div>
+        <div class="form-group">
+            <label asp-for="movie.Title"></label>
+            <input asp-for="movie.Title" class="form-control" />
+            <span asp-validation-for="movie.Title" class="text-danger"></span>
+        </div>
 
         <div class="form-group">
             <label asp-for="movie.Director"></label>
@@ -43,13 +43,19 @@
             <label asp-for="movie.PosterUrl"></label>
             <input asp-for="movie.PosterUrl" class="form-control" />
         </div>
-       
-        <a asp-page="/Sessions/Create" class="btn btn-secondary">
-            <i class="bi bi-arrow-left-circle-fill"></i> Sessions
-        </a>
-        <a asp-page="/Schedule" class="btn btn-secondary">
-            <i class="bi bi-arrow-left-circle-fill"></i> Back to schedule
-        </a>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save"></i> Save
+            </button>
+
+            <a asp-page="/Sessions/Create" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle-fill"></i> Sessions
+            </a>
+            <a asp-page="/Movies/Schedule" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle-fill"></i> Back to schedule
+            </a>
+        </div>
     </form>
 </div>
 
